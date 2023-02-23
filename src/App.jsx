@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import styled from '@emotion/styled';
+import Form from './components/Form';
 import ImageCripto from'./img/imagen-criptos.png';
+import useSelectCoins from './hooks/useSelectCoins';
+
 
 const Container = styled.div `
   max-width: 900px;
@@ -50,6 +53,8 @@ function App() {
       />
       <div>
         <Heading>Track the real-time price of your favorite Criptocurrencies</Heading>
+        <Form />
+ 
       </div>
     
     </Container>

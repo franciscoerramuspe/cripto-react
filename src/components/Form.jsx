@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import useSelectCoins from "../hooks/useSelectCoins";
 import { currencies } from "../data/currencies";
@@ -24,6 +24,7 @@ const InputSubmit = styled.input`
 
 const Form = () => {
    
+    const [ cryptos, setCryptos ] = useState([])
     const [ state, SelectCurrency ] = useSelectCoins('Select your currency', currencies)
     
     useEffect(() => {
@@ -32,7 +33,15 @@ const Form = () => {
 
             const response = await fetch(url)
             const result = await response.json()
-            console.log(result.Data)
+
+            const arrayCrypto = result.Data.map( crypto => {
+                const object = {
+                    id : crypto.CoinInfo.Name,
+                    name: crypto.CoinInfo.FullName
+                }
+                return object
+            })
+            setCryptos(arrayCrypto)
         }
         consultAPI();
     }, [])

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from '@emotion/styled';
 import Form from './components/Form';
 import ImageCripto from'./img/imagen-criptos.png';
@@ -45,6 +45,14 @@ const Heading = styled.h1 `
 `
 function App() {
   
+  const [ currencies, setCurrencies ] = useState({})
+
+  useEffect(() => {
+    if(Object.keys(currencies).length > 0) {
+      console.log(currencies)
+    }
+  }, [currencies])
+
   return (
     <Container>
       <Image
@@ -53,7 +61,9 @@ function App() {
       />
       <div>
         <Heading>Track the real-time price of your favorite Criptocurrencies</Heading>
-        <Form />
+        <Form 
+          setCurrencies = {setCurrencies}
+        />
  
       </div>
     

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import Error from "./Error";
 import useSelectCoins from "../hooks/useSelectCoins";
 import { currencies } from "../data/currencies";
 
@@ -22,11 +23,15 @@ const InputSubmit = styled.input`
     }
 `
 
-const Form = () => {
+const Form = ({setCurrencies}) => {
    
     const [ cryptos, setCryptos ] = useState([])
-    const [ state, SelectCurrency ] = useSelectCoins('Select your currency', currencies)
-    
+    const [ error, setError ] = useState(false)
+
+    const [ currency, SelectCurrency ] = useSelectCoins('Select your currency', currencies)
+    const [ cryptoCurrency, SelectCryptourrency ] = useSelectCoins('Select your Cryptocurrency', cryptos)
+
+
     useEffect(() => {
         const consultAPI = async () => {
             const url = "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=20&tsym=USD"
@@ -47,14 +52,34 @@ const Form = () => {
     }, [])
 
     
+    const handleSubmit = e => {
+        e.preventDefault()
+
+         if([currency, cryptoCurrency].includes('')) {
+            setError(true)
+            return
+         }
+         
+         setError(false)
+         setCurrencies({
+            currency,
+            cryptoCurrency
+         })
+
+    }
 
     return (
-        <form>
-            < SelectCurrency />
-            {state} 
-            
-            <InputSubmit type="submit" value="Track value" />
-        </form>
+        <>
+            {error && <Error>you must select a currency and a criptocurrency</Error>}
+            <form
+                onSubmit={handleSubmit}
+            >
+                < SelectCurrency />
+                < SelectCryptourrency/>
+                
+                <InputSubmit type="submit" value="Track value" />
+            </form>
+        </>
     );
 };
 
